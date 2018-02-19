@@ -18,7 +18,7 @@ void setup() {
 
   mars = new Mars();
   terrain = new Terrain(0.03);
-  
+
   stroke(0);
   mars.setMars();
 }

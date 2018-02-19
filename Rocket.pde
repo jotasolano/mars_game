@@ -41,6 +41,11 @@ class Rocket {
     x += vx;
     y += vy;
   }
+  
+  void increaseSpeed() {
+    vx += 0.1;
+    vy += 0.1;
+  }
 
   void moveUp(boolean fuel) {
     if (fuel == true) {

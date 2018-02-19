@@ -43,12 +43,14 @@ class Mars {
     rocket.render();
     terrain.render();
     hud.renderFuel();
+    hud.renderTime();
   }
 
   // Key functions
   void pressedUp() {
     if (hud.fuelState == true) {
       rocket.moveUp(fuel);
+      rocket.increaseSpeed();
       hud.updateFuel(fuelDecay);
     }
   }
