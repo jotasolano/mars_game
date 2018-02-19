@@ -9,12 +9,16 @@ class Mars {
   float angle = 0;
   float angleVar = PI / 100;
 
-  float inc = 0.01;
+  int fuelDecay = 1;
+  boolean fuel = true;
+
+  float inc = 0.02;
 
 
   // Mars objects
   Rocket rocket;
   Terrain terrain;
+  HUD hud;
 
   // Main constructor
   Mars() {
@@ -22,6 +26,7 @@ class Mars {
       rocketVy, gravity, angle, angleVar);
 
     terrain = new Terrain(inc);
+    hud = new HUD();
   }
 
   // setting the vertices for terrain only once
@@ -37,16 +42,26 @@ class Mars {
     // Draw
     rocket.render();
     terrain.render();
+    hud.renderFuel();
   }
 
   // Key functions
   void pressedUp() {
-    rocket.moveUp();
+    if (hud.fuelState == true) {
+      rocket.moveUp(fuel);
+      hud.updateFuel(fuelDecay);
+    }
   }
   void pressedLeft() {
-    rocket.moveLeft();
+    if (hud.fuelState == true) {
+      rocket.moveLeft();
+      hud.updateFuel(fuelDecay);
+    }
   }
   void pressedRight() {
-    rocket.moveRight();
+    if (hud.fuelState == true) {
+      rocket.moveRight();
+      hud.updateFuel(fuelDecay);
+    }
   }
 }

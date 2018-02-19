@@ -13,7 +13,7 @@ class Terrain {
 
   void createTerrain() {
     for (int x = 0; x < width; x++) {
-      float n = map(noise(xoff), 0, 1, -50, 50);
+      float n = map(noise(xoff), 0, 1, -60, 60);
       float s = map(sin(xoff), -1, 1, height, height/2);
       float y = s + n;
 
@@ -31,7 +31,10 @@ class Terrain {
     for (int i = 0; i < terrX.length; i++) {
       stroke(0);
       noFill();
-      vertex(terrX[i], terrY[i]);
+      if (terrX[i] > 5*width/8 && terrX[i] < 6*width/8) {
+        vertex(terrX[i], 550);
+      }
+      else {vertex(terrX[i], terrY[i]); };
     }
     endShape();
     popStyle();

@@ -5,9 +5,10 @@ class Rocket {
   float angle, angleVar;
   float gravity;
   boolean landed;
+  boolean fuel;
 
-  Rocket(float x, float y, float w, float h, float vx,
-         float vy, float gravity, float angle, float angleVar) {
+  Rocket(float x, float y, float w, float h, float vx, 
+    float vy, float gravity, float angle, float angleVar) {
     this.x = x;
     this.y = y;
     this.w = w;
@@ -23,7 +24,7 @@ class Rocket {
     rectMode(CENTER);
     pushMatrix();
     pushStyle();
-    
+
     translate(x, y);
     rotate(angle); 
     stroke(0);
@@ -41,18 +42,20 @@ class Rocket {
     y += vy;
   }
 
-  void moveUp() {
-    y += vy * 10 * sin(angle - PI/2);
-    x += vy * 10 * cos(angle - PI/2);
+  void moveUp(boolean fuel) {
+    if (fuel == true) {
+      y += vy * 10 * sin(angle - PI/2);
+      x += vy * 10 * cos(angle - PI/2);
+    }
   }
-  
-    void moveLeft() {
+
+  void moveLeft() {
     angle -= angleVar;
     y -= vy * 10 * sin(angle);
     x -= vy * 10 * cos(angle);
   }
-  
-    void moveRight() {
+
+  void moveRight() {
     angle += angleVar;
     y += vy * 10 * sin(angle);
     x += vy * 10 * cos(angle);
