@@ -2,29 +2,35 @@ class Rocket {
 
   float x, y, w, h;
   float vx, vy;
+  float ax, ay;
   float angle, angleVar;
   float gravity;
   boolean landed;
   boolean fuel;
+  float currentSpeed;
+  float maxSpeed;
+  int m = 0;
 
-  Rocket(float x, float y, float w, float h, float vx, 
-    float vy, float gravity, float angle, float angleVar) {
+  Rocket(float x, float y, float w, float h, float gravity, float angle, 
+    float angleVar, float ax, float ay) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
-    this.vx = vx;
-    this.vy = vy;
     this.gravity = gravity;
     this.angle = angle;
     this.angleVar = angleVar;
+    this.ax = ax;
+    this.ay = ay;
+
+    vx = ax;
+    vy = ay;
   }
 
   void render() {
-    rectMode(CENTER);
     pushMatrix();
     pushStyle();
-
+    rectMode(CENTER);
     translate(x, y);
     rotate(angle); 
     stroke(0);
@@ -41,28 +47,30 @@ class Rocket {
     x += vx;
     y += vy;
   }
-  
-  void increaseSpeed() {
-    vx += 0.1;
-    vy += 0.1;
-  }
 
   void moveUp(boolean fuel) {
     if (fuel == true) {
-      y += vy * 10 * sin(angle - PI/2);
-      x += vy * 10 * cos(angle - PI/2);
+      currentSpeed = m++;
+      maxSpeed = constrain(currentSpeed, 0, 100);
+      y += (maxSpeed/100) * sin(angle - PI/2);
+      x += (maxSpeed/100) * cos(angle - PI/2);
     }
   }
 
   void moveLeft() {
     angle -= angleVar;
-    y -= vy * 10 * sin(angle);
-    x -= vy * 10 * cos(angle);
+    y -= vy * sin(angle);
+    x -= vy * cos(angle);
   }
 
   void moveRight() {
     angle += angleVar;
-    y += vy * 10 * sin(angle);
-    x += vy * 10 * cos(angle);
+    y += vy * sin(angle);
+    x += vy * cos(angle);
+  }
+  
+  // Collision detection
+  void checkMountains() {
+    
   }
 }

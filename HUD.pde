@@ -22,6 +22,7 @@ class HUD {
   }
 
   void renderFuel() {
+    pushMatrix();
     pushStyle();
     textFont(h1);
     textAlign(LEFT);
@@ -30,6 +31,7 @@ class HUD {
     textFont(h3);
     text(fuel, fuelX, fuelY);
     popStyle();
+    popMatrix();
   }
 
   void renderTime() {

@@ -12,19 +12,18 @@ Mars mars;
 Terrain terrain;
 
 void setup() {
-  size(800, 600);
+  size(800, 600, P2D);
   background(200);
   pixelDensity(displayDensity());
 
   mars = new Mars();
-  terrain = new Terrain(0.03);
 
   stroke(0);
   mars.setMars();
 }
 
 void draw() {
-  background(200);
+  background(10, 6);  
   mars.run();
 
   if (keyPressed) {

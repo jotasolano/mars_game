@@ -4,8 +4,8 @@ class Mars {
   float rocketH = 60;
   float rocketVx = 0.05;
   float rocketVy = 0.05;
-  float gravity = 0.0000001;
-  float acceleration = 0.1;
+  float gravity = 0.0001;
+  float acceleration = 0.01;
   float angle = 0;
   float angleVar = PI / 100;
 
@@ -22,8 +22,8 @@ class Mars {
 
   // Main constructor
   Mars() {
-    rocket = new Rocket(30, 40, rocketW, rocketH, rocketVx, 
-      rocketVy, gravity, angle, angleVar);
+    rocket = new Rocket(30, 40, rocketW, rocketH, gravity, angle, angleVar,
+    acceleration, acceleration);
 
     terrain = new Terrain(inc);
     hud = new HUD();
@@ -32,6 +32,7 @@ class Mars {
   // setting the vertices for terrain only once
   void setMars() {
     terrain.createTerrain();
+    terrain.createStars();
   }
 
   // Running
@@ -40,8 +41,10 @@ class Mars {
     rocket.fall();
 
     // Draw
+    terrain.renderStars();
     rocket.render();
-    terrain.render();
+    terrain.renderMountains();
+    terrain.renderPlatform();
     hud.renderFuel();
     hud.renderTime();
   }
@@ -50,7 +53,6 @@ class Mars {
   void pressedUp() {
     if (hud.fuelState == true) {
       rocket.moveUp(fuel);
-      rocket.increaseSpeed();
       hud.updateFuel(fuelDecay);
     }
   }
