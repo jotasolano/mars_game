@@ -46,14 +46,15 @@ class Rocket {
     vy += gravity;
     x += vx;
     y += vy;
+    y += (maxSpeed/100) * sin(angle - PI/2);
+    x += (maxSpeed/100) * cos(angle - PI/2);
   }
 
   void moveUp(boolean fuel) {
     if (fuel == true) {
       currentSpeed = m++;
       maxSpeed = constrain(currentSpeed, 0, 100);
-      y += (maxSpeed/100) * sin(angle - PI/2);
-      x += (maxSpeed/100) * cos(angle - PI/2);
+      println(maxSpeed + " " + frameCount);
     }
   }
 
@@ -68,9 +69,15 @@ class Rocket {
     y += vy * sin(angle);
     x += vy * cos(angle);
   }
-  
-  // Collision detection
-  void checkMountains() {
-    
+
+  // Collision + landing detection
+  void checkLanding() {
+    // check if the rocket is not too tilted (-5 to 5 degrees)
+    // this doesn't work because the angle keeps adding to itself
+    if (angle > -0.1 && angle < 0.1) {
+      println("rocket is vertical", angle);
+    } else {
+      println("rocket is tilted", angle);
+    }
   }
 }

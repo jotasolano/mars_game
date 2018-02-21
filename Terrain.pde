@@ -88,4 +88,13 @@ class Terrain {
     popStyle();
     popMatrix();
   }
+  
+  boolean checkCollision(Rocket r) {
+    boolean collided = false;
+    if (terrY[(int)r.x] < r.y) {
+      collided = true;
+      println("TERRAIN COLLISION");
+    }
+    return collided;
+  }
 }

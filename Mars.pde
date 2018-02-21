@@ -47,6 +47,9 @@ class Mars {
     terrain.renderPlatform();
     hud.renderFuel();
     hud.renderTime();
+    terrain.checkCollision(rocket);
+    
+    //rocket.checkLanding();
   }
 
   // Key functions
