@@ -8,7 +8,7 @@ class Terrain {
   float[] terrY = new float[width];
   float[] starsX = new float[150];
   float[] starsY = new float[150];
-  
+
   float[] p1 = {5*width/8, 6*width/8};
 
   Terrain(float inc) {
@@ -55,14 +55,14 @@ class Terrain {
     popStyle();
     popMatrix();
   }
-  
+
   void renderPlatform() {
     pushMatrix();
     pushStyle();
     fill(100);
     noStroke();
     rect(p1[0], 550, p1[1] - p1[0], 10);
-    
+
     // yellow strokes
     stroke(255, 213, 0);
     strokeWeight(3);
@@ -88,10 +88,10 @@ class Terrain {
     popStyle();
     popMatrix();
   }
-  
-  boolean checkCollision(Rocket r) {
+
+  boolean checkCollision(Booster b) {
     boolean collided = false;
-    if (terrY[(int)r.x] < r.y) {
+    if (terrY[(int)b.position.x] < b.position.y) {
       collided = true;
       println("TERRAIN COLLISION");
     }

@@ -5,18 +5,16 @@ class Booster {
 
   float maxSpeed = 4;
   float gForce = 0.001;
-  float wind = 0.0005;
+  float wind = 0.0001;
   float damping = 0.990;
+  float thrustCount = 0;
 
   float w = 10;
   float h = 40;
 
   float heading = 0;
-
-  boolean thrusting = false;
-
-  Booster() {
-    position = new PVector(width/2, height/2);
+  Booster(PVector position) {
+    this.position = position;
     velocity = new PVector();
     acceleration = new PVector();
   }
@@ -29,6 +27,7 @@ class Booster {
     position.add(velocity);
     acceleration.mult(0);
     applyGravity();
+    applyThrust(thrustCount);
   }
 
   // Pseudo Newton's second law
@@ -46,15 +45,13 @@ class Booster {
     applyForce(gravity);
   }
 
-  void applyThrust() {
+  void applyThrust(float increase) {
     float angle = heading - PI/2;
 
     // Polar to cartesian
     PVector force = new PVector(cos(angle), sin(angle));
-    force.mult(0.01);
+    force.mult(increase);
     applyForce(force);
-
-    thrusting = true;
   }
 
   void reduceThrust() {
@@ -63,12 +60,7 @@ class Booster {
     // Polar to cartesian
     PVector force = new PVector(cos(angle + PI), sin(angle  + PI));
     force.mult(0.01);
-    if (acceleration.mag() == 0) {
-      println("zero");
-    }
     applyForce(force);
-
-    thrusting = true;
   }
 
   void render() {
@@ -83,11 +75,7 @@ class Booster {
     line(0, 0, 0, -40);
     popStyle();
     popMatrix();
-
-    thrusting = false;
   }
-
-
 
   void moveLeft() {
     this.turn(-0.02);
@@ -98,7 +86,8 @@ class Booster {
   }
 
   void thrust() {
-    this.applyThrust();
+    this.applyThrust(thrustCount);
+    thrustCount = thrustCount + 0.00001;
   }
 
   void reduce() {

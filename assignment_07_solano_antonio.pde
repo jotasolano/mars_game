@@ -23,7 +23,7 @@ void setup() {
 }
 
 void draw() {
-  background(200, 6);  
+  background(10, 6);  
   mars.run();
 
   if (keyPressed) {

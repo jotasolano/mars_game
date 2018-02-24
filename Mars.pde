@@ -1,15 +1,10 @@
 class Mars {
   int fuelDecay = 1;
   boolean fuel = true;
-
-  float theta;
-  PVector xaxis = new PVector(1, 0);
-  float inc = 0.02;
-
-  PVector gravity = new PVector(0, 0.05);
+  float inc = 0.02;  
+  PVector pos = new PVector(width/4, 30);
 
   // Mars objects
-  Rocket rocket;
   Booster booster;
   Terrain terrain;
   HUD hud;
@@ -19,13 +14,13 @@ class Mars {
     terrain = new Terrain(inc);
     hud = new HUD();
 
-    booster = new Booster();
+    booster = new Booster(pos);
   }
 
   // setting the vertices for terrain only once
   void setMars() {
-    //terrain.createTerrain();
-    //terrain.createStars();
+    terrain.createTerrain();
+    terrain.createStars();
   }
 
   // Running
@@ -35,13 +30,13 @@ class Mars {
     booster.render();
 
 
-    //rocket.gravity();
     // Draw
-    //terrain.renderStars();
-    //terrain.renderMountains();
-    //terrain.renderPlatform();
+    terrain.renderStars();
+    terrain.renderMountains();
+    terrain.renderPlatform();
     hud.renderFuel();
     hud.renderTime();
+    terrain.checkCollision(booster);
   }
 
   // Key functions
