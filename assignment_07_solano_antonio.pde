@@ -32,6 +32,9 @@ void draw() {
       case UP:
         mars.pressedUp();
         break;
+      case DOWN:
+        mars.pressedDown();
+        break;
       case LEFT:
         mars.pressedLeft();
         break;
