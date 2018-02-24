@@ -1,73 +1,74 @@
 class Mars {
-
-  float rocketW = 15;
-  float rocketH = 60;
-  float rocketVx = 0.05;
-  float rocketVy = 0.05;
-  float gravity = 0.0001;
-  float acceleration = 0.01;
-  float angle = 0;
-  float angleVar = PI / 100;
-
   int fuelDecay = 1;
   boolean fuel = true;
 
+  float theta;
+  PVector xaxis = new PVector(1, 0);
   float inc = 0.02;
 
+  PVector gravity = new PVector(0, 0.05);
 
   // Mars objects
   Rocket rocket;
+  Booster booster;
   Terrain terrain;
   HUD hud;
 
   // Main constructor
   Mars() {
-    rocket = new Rocket(30, 40, rocketW, rocketH, gravity, angle, angleVar,
-    acceleration, acceleration);
-
     terrain = new Terrain(inc);
     hud = new HUD();
+
+    booster = new Booster();
   }
 
   // setting the vertices for terrain only once
   void setMars() {
-    terrain.createTerrain();
-    terrain.createStars();
+    //terrain.createTerrain();
+    //terrain.createStars();
   }
 
   // Running
   void run() {
     // Physics
-    rocket.fall();
+    booster.update();
+    booster.render();
 
+
+    //rocket.gravity();
     // Draw
-    terrain.renderStars();
-    rocket.render();
-    terrain.renderMountains();
-    terrain.renderPlatform();
+    //terrain.renderStars();
+    //terrain.renderMountains();
+    //terrain.renderPlatform();
     hud.renderFuel();
     hud.renderTime();
-    terrain.checkCollision(rocket);
-    
-    //rocket.checkLanding();
   }
 
   // Key functions
   void pressedUp() {
     if (hud.fuelState == true) {
-      rocket.moveUp(fuel);
+      booster.thrust();
       hud.updateFuel(fuelDecay);
     }
   }
+  
+  void pressedDown() {
+    if (hud.fuelState == true) {
+      booster.reduceThrust();
+      hud.updateFuel(fuelDecay);
+    }
+  }
+  
   void pressedLeft() {
     if (hud.fuelState == true) {
-      rocket.moveLeft();
+      booster.moveLeft();
       hud.updateFuel(fuelDecay);
     }
   }
+  
   void pressedRight() {
     if (hud.fuelState == true) {
-      rocket.moveRight();
+      booster.moveRight();
       hud.updateFuel(fuelDecay);
     }
   }

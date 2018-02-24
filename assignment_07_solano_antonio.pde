@@ -23,7 +23,7 @@ void setup() {
 }
 
 void draw() {
-  background(10, 6);  
+  background(200, 6);  
   mars.run();
 
   if (keyPressed) {
@@ -31,6 +31,9 @@ void draw() {
       switch(keyCode) {
       case UP:
         mars.pressedUp();
+        break;
+      case DOWN:
+        mars.pressedDown();
         break;
       case LEFT:
         mars.pressedLeft();

@@ -10,65 +10,91 @@ class Rocket {
   float currentSpeed;
   float maxSpeed;
   int m = 0;
+  float scayl = 1.0;
 
-  Rocket(float x, float y, float w, float h, float gravity, float angle, 
-    float angleVar, float ax, float ay) {
+  PVector position, velocity, acceleration, thrust, g;
+  float mass;
+
+  Rocket(float mass, float x, float y, float scayl) {
     this.x = x;
     this.y = y;
-    this.w = w;
-    this.h = h;
-    this.gravity = gravity;
-    this.angle = angle;
-    this.angleVar = angleVar;
-    this.ax = ax;
-    this.ay = ay;
-
-    vx = ax;
-    vy = ay;
+    this.mass = mass;
+    this.scayl = scayl;
+    position = new PVector(x, y);
+    velocity = new PVector(0, 0);
+    thrust = new PVector(0, 0);
+    acceleration = new PVector(0, 0);
+    g = new PVector(0, 0.005);
   }
 
-  void render() {
+  void applyForce(PVector force) {
+    PVector f = PVector.div(force, mass);
+    acceleration.add(f);
+  }
+
+  void update() {
+    velocity.add(acceleration);
+    position.add(velocity);
+    acceleration.mult(0);
+  }
+
+  void gravity() {
+    velocity.add(g).limit(0.05);
+  }
+
+  void rot(PVector v, float theta) {
+    float m = v.mag();
+    float a = v.heading();
+    a += theta;
+
+    v.x = m * cos(a);
+    v.y = m * sin(a);
+  }
+
+  void render(PVector v) {
     pushMatrix();
     pushStyle();
     rectMode(CENTER);
-    translate(x, y);
-    rotate(angle); 
+    translate(position.x, position.y);
+    rotate(v.heading());
+    println(v.heading());
+    float len = v.mag()*scayl;
     stroke(0);
     fill(255);
-    rect(0, 0, w, h);
-    line(0, 0, 0, -40);
-
+    rect(v.x, v.y, 10, 40);
+    line(len, 0, 0, -40);
     popStyle();
     popMatrix();
   }
 
-  void fall() {
-    vy += gravity;
-    x += vx;
-    y += vy;
-    y += (maxSpeed/100) * sin(angle - PI/2);
-    x += (maxSpeed/100) * cos(angle - PI/2);
-  }
+  //void fall() {
+  //  vy += gravity;
+  //  x += vx;
+  //  y += vy;
+  //  y += (maxSpeed/100) * sin(angle - PI/2);
+  //  x += (maxSpeed/100) * cos(angle - PI/2);
+  //}
 
-  void moveUp(boolean fuel) {
-    if (fuel == true) {
-      currentSpeed = m++;
-      maxSpeed = constrain(currentSpeed, 0, 100);
-      println(maxSpeed + " " + frameCount);
-    }
-  }
 
-  void moveLeft() {
-    angle -= angleVar;
-    y -= vy * sin(angle);
-    x -= vy * cos(angle);
-  }
+  //void moveUp(boolean fuel) {
+  //  if (fuel == true) {
+  //    currentSpeed = m++;
+  //    maxSpeed = constrain(currentSpeed, 0, 100);
+  //    println(maxSpeed + " " + frameCount);
+  //  }
+  //}
 
-  void moveRight() {
-    angle += angleVar;
-    y += vy * sin(angle);
-    x += vy * cos(angle);
-  }
+  //void moveLeft() {
+  //  angle -= angleVar;
+  //  y -= vy * sin(angle);
+  //  x -= vy * cos(angle);
+  //}
+
+  //void moveRight() {
+  //  angle += angleVar;
+  //  y += vy * sin(angle);
+  //  x += vy * cos(angle);
+  //}
 
   // Collision + landing detection
   void checkLanding() {
