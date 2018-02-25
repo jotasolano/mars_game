@@ -17,8 +17,6 @@ void setup() {
   pixelDensity(displayDensity());
 
   mars = new Mars();
-
-  stroke(0);
   mars.setMars();
 }
 

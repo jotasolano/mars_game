@@ -10,7 +10,7 @@ class HUD {
   boolean fuelState = true;
 
   HUD() {
-    fuel = 5000;
+    fuel = 200;
     h1 = createFont(fontURL, 24, true);
     h3 = createFont(fontURL, 22, true);
 
@@ -42,14 +42,15 @@ class HUD {
     fill(fontColor);
     text("Time", timeX, timeY - 20);
     textFont(h3);
-    //text(mins + "m:" + m/1000 + "s", timeX, timeY);
     text(m/1000 + " secs", timeX, timeY);
     popStyle();
   }
-
-  void updateFuel(int inc) {
+  
+  void updateFuel(boolean engineRunning) {
     if (fuel > 0) {
-      fuel -= inc;
+      if (engineRunning == true) {
+        fuel -= 1;
+      }
     } else {
       fuel = 0;
       fuelState = false;

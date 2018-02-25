@@ -1,6 +1,4 @@
 class Mars {
-  int fuelDecay = 1;
-  boolean fuel = true;
   float inc = 0.02;  
   PVector pos = new PVector(width/4, 30);
 
@@ -14,7 +12,7 @@ class Mars {
     terrain = new Terrain(inc);
     hud = new HUD();
 
-    booster = new Booster(pos);
+    booster = new Booster(pos, 0);
   }
 
   // setting the vertices for terrain only once
@@ -25,46 +23,50 @@ class Mars {
 
   // Running
   void run() {
-    // Physics
+    terrain.renderStars();
     booster.update();
     booster.render();
+    booster.visualizeForces();
 
-
-    // Draw
-    terrain.renderStars();
     terrain.renderMountains();
     terrain.renderPlatform();
+    terrain.checkCollision(booster);
+    hud.updateFuel(booster.engineRunning);
+
+    // Kill thrust if we run out of fuel
+    if (hud.fuel == 0) {
+      booster.thrust.setMag(0.00000001);
+      println("out of thrust");
+    }
+
     hud.renderFuel();
     hud.renderTime();
-    terrain.checkCollision(booster);
   }
 
   // Key functions
   void pressedUp() {
     if (hud.fuelState == true) {
-      booster.thrust();
-      hud.updateFuel(fuelDecay);
+      booster.thrust(0.001);
     }
   }
-  
+
   void pressedDown() {
     if (hud.fuelState == true) {
-      booster.reduceThrust();
-      hud.updateFuel(fuelDecay);
+      booster.thrust(-0.001);
     }
   }
-  
+
   void pressedLeft() {
     if (hud.fuelState == true) {
-      booster.moveLeft();
-      hud.updateFuel(fuelDecay);
+      booster.turn(-0.02);
+      hud.updateFuel(booster.engineRunning);
     }
   }
-  
+
   void pressedRight() {
     if (hud.fuelState == true) {
-      booster.moveRight();
-      hud.updateFuel(fuelDecay);
+      booster.turn(0.02);
+      hud.updateFuel(booster.engineRunning);
     }
   }
 }
