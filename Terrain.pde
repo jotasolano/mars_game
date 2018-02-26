@@ -91,10 +91,19 @@ class Terrain {
 
   boolean checkCollision(Booster b) {
     boolean collided = false;
-    if (terrY[(int)b.position.x] < b.position.y) {
+    if (terrY[(int)b.position.x] < b.position.y+40) {
       collided = true;
       println("TERRAIN COLLISION");
+    } else {
+      println("CLEAR");
     }
     return collided;
   }
+  
+  //boolean checkLanding(Booster b) {
+  //  boolean landed = false;
+  //  if ()
+    
+  //  return landed;
+  //}
 }

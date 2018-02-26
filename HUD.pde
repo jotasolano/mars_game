@@ -1,6 +1,6 @@
 class HUD {
   String fontURL = "VT323-Regular.ttf";
-  color fontColor = color(#00aa99);
+  color fontColor = #f15a29;
   PFont h1, h3;
   float fuelX, fuelY, timeX, timeY;
 
@@ -10,7 +10,7 @@ class HUD {
   boolean fuelState = true;
 
   HUD() {
-    fuel = 200;
+    fuel = 3000;
     h1 = createFont(fontURL, 24, true);
     h3 = createFont(fontURL, 22, true);
 

@@ -20,6 +20,8 @@ class Booster {
 
   float w = 10;
   float h = 40;
+  
+  PImage boosterPng, burstLo, burstMi, burstHi;
 
   Booster(PVector position, float angle) {
     this.thrust = new PVector(0.00001, 0, 0);
@@ -30,6 +32,15 @@ class Booster {
     this.acceleration = new PVector();
     this.velocity = new PVector();
     this.position = position;
+    
+    boosterPng = loadImage("boosterImg2x.png");
+    burstLo = loadImage("burst_lo.png");
+    burstMi = loadImage("burst_mi.png");
+    burstHi = loadImage("burst_hi.png");
+    
+    boosterPng.resize(80,30);
+    
+    
   }
 
   // Based on the nature of code
@@ -38,7 +49,7 @@ class Booster {
 
     acceleration.set(0, 0, 0);  // reset acc
     acceleration.add(thrust);
-    //acceleration.add(gravity);
+    acceleration.add(gravity);
     acceleration.add(wind);
 
     // Now update the rest
@@ -72,13 +83,23 @@ class Booster {
     pushMatrix();
     pushStyle();
     rectMode(CENTER);
+    imageMode(CENTER);
     translate(position.x, position.y);
     rotate(thrust.heading());
     stroke(0);
     fill(255);
-    rect(0, 0, 40, 10);
-    line(0, 0, 40, 0);
-    triangle(-h/2, -w/2, h/2, 0, -h/2, w/2);
+    image(boosterPng, 0, 0);
+    boosterPng.updatePixels();
+    println(thrustCount);
+    if (thrustCount > 0.00000001) {
+      image(burstLo, -35, 0);
+      if (thrustCount > 0.006) {
+        image(burstMi, -42, 0);
+      }
+      if(thrustCount > 0.01) {
+        image(burstHi, -50, 0);
+      }
+    }
     popStyle();
     popMatrix();
   }

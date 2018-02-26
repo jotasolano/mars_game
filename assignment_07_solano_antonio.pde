@@ -4,16 +4,14 @@
  antonio solano - solanoroman.j@husky.neu.edu
  **************************************************************************************/
 
-// Global vars
-
-
 // Game objects
 Mars mars;
 Terrain terrain;
 
 void setup() {
   size(800, 600, P2D);
-  background(200);
+  //fullScreen(P2D);
+  background(0);
   pixelDensity(displayDensity());
 
   mars = new Mars();
@@ -21,9 +19,8 @@ void setup() {
 }
 
 void draw() {
-  background(10, 6);  
-  mars.run();
-
+    mars.run();
+ 
   if (keyPressed) {
     if (key == CODED) {
       switch(keyCode) {
