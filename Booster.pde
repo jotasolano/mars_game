@@ -12,16 +12,16 @@ class Booster {
 
   float maxSpeed = 4;
   float gForce = 0.001;
-  float windForce = 0.0001;
+  float windForce = 0.0005;
   float damping = 0.990;
   float thrustCount = 0;
-  
+
   boolean engineRunning = false;
 
   float w = 10;
   float h = 40;
-  
-  PImage boosterPng, burstLo, burstMi, burstHi;
+
+  PImage boosterPng, burstLo, burstMi, burstHi, crash1, crash2;
 
   Booster(PVector position, float angle) {
     this.thrust = new PVector(0.00001, 0, 0);
@@ -32,15 +32,17 @@ class Booster {
     this.acceleration = new PVector();
     this.velocity = new PVector();
     this.position = position;
-    
+
     boosterPng = loadImage("boosterImg2x.png");
     burstLo = loadImage("burst_lo.png");
     burstMi = loadImage("burst_mi.png");
     burstHi = loadImage("burst_hi.png");
-    
-    boosterPng.resize(80,30);
-    
-    
+    crash1 = loadImage("crash_1.png");
+    crash2 = loadImage("crash_2.png");
+
+    boosterPng.resize(80, 30);
+    crash1.resize(52, 29);
+    crash2.resize(50, 29);
   }
 
   // Based on the nature of code
@@ -69,9 +71,8 @@ class Booster {
     } else if (position.x < 0) {
       position.x = width - 1;
     }
-    
+
     // Stop rocket once fuel reaches 0
-    
   }
 
   void turn(float angleInc) {
@@ -79,27 +80,43 @@ class Booster {
     engineRunning = true;
   }
 
-  void render() {
+  void render(boolean collided) {
+    if (collided == false) {
+      pushMatrix();
+      pushStyle();
+      rectMode(CENTER);
+      imageMode(CENTER);
+      translate(position.x, position.y);
+      rotate(thrust.heading());
+      stroke(0);
+      fill(255);
+      image(boosterPng, 0, 0);
+      if (thrustCount > 0.00000001) {
+        image(burstLo, -35, 0);
+        if (thrustCount > 0.006) {
+          image(burstMi, -42, 0);
+        }
+        if (thrustCount > 0.01) {
+          image(burstHi, -50, 0);
+        }
+      }
+      popStyle();
+      popMatrix();
+    }
+  }
+
+  void renderCrash() {
     pushMatrix();
     pushStyle();
     rectMode(CENTER);
     imageMode(CENTER);
     translate(position.x, position.y);
-    rotate(thrust.heading());
+    rotate(-thrust.heading());
     stroke(0);
     fill(255);
-    image(boosterPng, 0, 0);
-    boosterPng.updatePixels();
-    println(thrustCount);
-    if (thrustCount > 0.00000001) {
-      image(burstLo, -35, 0);
-      if (thrustCount > 0.006) {
-        image(burstMi, -42, 0);
-      }
-      if(thrustCount > 0.01) {
-        image(burstHi, -50, 0);
-      }
-    }
+    image(crash1, 0, 0);
+    rotate(PI);
+    image(crash2, thrust.x + 20, thrust.y + 20);
     popStyle();
     popMatrix();
   }

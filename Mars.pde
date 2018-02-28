@@ -1,6 +1,6 @@
 class Mars {
-  float inc = 0.02;  
-  PVector pos = new PVector(60, 70);
+  float inc = 0.03;  
+  PVector pos = new PVector(width/12, 70);
 
   // Mars objects
   Booster booster;
@@ -26,28 +26,36 @@ class Mars {
 
   // Running
   void run() {
+
+    booster.render(false);
+    terrain.renderStars();
+    terrain.renderMountains();
+
+    splash.render();
+
     splash.clickedSplash();
     // Check if we're on splash screen, then execute everything
     if (splash.splashClicked == true) {
       background(10, 6);  
       terrain.renderStars();
       booster.update();
-      booster.render();
-      booster.visualizeForces();
+      booster.render(terrain.checkCollision(booster,splash,hud));
+      //booster.visualizeForces();
 
       terrain.renderMountains();
       terrain.renderPlatform();
-      terrain.checkCollision(booster);
+      terrain.checkCollision(booster, splash, hud);
+      terrain.checkLanding(booster, splash, hud);
       hud.updateFuel(booster.engineRunning);
 
       // Kill thrust if we run out of fuel
       if (hud.fuel == 0) {
         booster.thrust.setMag(0.00000001);
-        println("out of thrust");
+        //println("out of thrust");
       }
 
       hud.renderFuel();
-      hud.renderTime();
+      //hud.renderTime();
     }
   }
 

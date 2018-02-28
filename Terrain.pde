@@ -8,8 +8,9 @@ class Terrain {
   float[] terrY = new float[width];
   float[] starsX = new float[150];
   float[] starsY = new float[150];
+  float platformHeight = height -100;
 
-  float[] p1 = {5*width/8, 6*width/8};
+  float[] p1 = {8*width/12, 9*width/12};
 
   Terrain(float inc) {
     this.inc = inc;
@@ -17,8 +18,9 @@ class Terrain {
 
   void createTerrain() {
     for (int x = 0; x < width; x++) {
+      float h = map(x, 0, width, 3, 1);
       float n = map(noise(xoff), 0, 1, -60, 60);
-      float s = map(sin(xoff), -1, 1, height-20, height/2);
+      float s = map(sin(xoff), -h, h, height-20, height/2);
       float y = s + n;
       terrX[x] = x;
       terrY[x] = y;
@@ -45,7 +47,7 @@ class Terrain {
     vertex(0, height);
     for (int i = 0; i < terrX.length; i++) {
       if (terrX[i] > p1[0] && terrX[i] < p1[1]) {
-        vertex(terrX[i], 550);
+        vertex(terrX[i], platformHeight);
       } else {
         vertex(terrX[i], terrY[i]);
       };
@@ -61,7 +63,7 @@ class Terrain {
     pushStyle();
     fill(100);
     noStroke();
-    rect(p1[0], 550, p1[1] - p1[0], 10);
+    rect(p1[0], platformHeight, p1[1] - p1[0], 10);
 
     // yellow strokes
     stroke(255, 213, 0);
@@ -70,7 +72,7 @@ class Terrain {
     translate(p1[0], 0);
     for (int i = 0; i < p1[1] - p1[0]; i++) {
       if (i % 9 == 0) {
-        line(i, 550, i, 560);
+        line(i, platformHeight, i, platformHeight + 10);
       }
     }
     popStyle();
@@ -89,21 +91,29 @@ class Terrain {
     popMatrix();
   }
 
-  boolean checkCollision(Booster b) {
+  boolean checkCollision(Booster b, Splash splash, HUD hud) {
     boolean collided = false;
-    if (terrY[(int)b.position.x] < b.position.y+40) {
+    boolean win;
+    if (terrY[(int)b.position.x] < b.position.y+10) {
       collided = true;
-      println("TERRAIN COLLISION");
-    } else {
-      println("CLEAR");
+      win = false;
+      b.velocity.setMag(0);
+      b.thrust.setMag(0.000001);
+      b.renderCrash();
+      splash.ending(win, hud);
     }
     return collided;
   }
-  
-  //boolean checkLanding(Booster b) {
-  //  boolean landed = false;
-  //  if ()
-    
-  //  return landed;
-  //}
+
+  boolean checkLanding(Booster b, Splash splash, HUD hud) {
+    boolean landed = false;
+    boolean win = false;
+    if (b.position.x>= 8*width/12 && b.position.x <= 9*width/12 && b.position.y+31 >= platformHeight) {
+      win = true;
+      b.velocity.setMag(0);
+      b.thrust.setMag(0.000001);
+      splash.ending(win, hud);
+    }
+    return landed;
+  }
 }
